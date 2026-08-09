@@ -7,6 +7,7 @@ enum CaptureMode: String, CaseIterable, Identifiable, Codable {
     case video = "動画"
 
     var id: Self { self }
+    var title: String { L10n.string(rawValue) }
 }
 
 enum PhotoFileFormat: String, CaseIterable, Identifiable, Codable {
@@ -40,10 +41,11 @@ enum PhotoResolution: String, CaseIterable, Identifiable, Codable {
     case fortiethMP = "0.025 MP"
 
     var id: Self { self }
+    var title: String { L10n.string(rawValue) }
 
     var shortTitle: String {
         switch self {
-        case .original: "最大"
+        case .original: L10n.string("最大")
         case .twelveMP: "12M"
         case .eightMP: "8M"
         case .fourMP: "4M"
@@ -85,10 +87,16 @@ enum ColorLevels: Int, CaseIterable, Identifiable, Codable {
     var id: Self { self }
 
     var title: String {
-        self == .full ? "標準" : "\(rawValue)段階/色"
+        self == .full
+            ? L10n.string("標準")
+            : L10n.format("%d段階/色", rawValue)
     }
 
-    var shortTitle: String { self == .full ? "標準" : "\(rawValue)段" }
+    var shortTitle: String {
+        self == .full
+            ? L10n.string("標準")
+            : L10n.format("%d段", rawValue)
+    }
     var isReduced: Bool { self != .full }
 }
 
@@ -103,11 +111,11 @@ enum ImageContrast: Double, CaseIterable, Identifiable, Codable {
 
     var shortTitle: String {
         switch self {
-        case .low: "低"
-        case .slightlyLow: "弱"
-        case .standard: "標準"
-        case .slightlyHigh: "強"
-        case .high: "高"
+        case .low: L10n.string("低")
+        case .slightlyLow: L10n.string("弱")
+        case .standard: L10n.string("標準")
+        case .slightlyHigh: L10n.string("強")
+        case .high: L10n.string("高")
         }
     }
 
@@ -146,32 +154,32 @@ enum VideoChromaMode: String, CaseIterable, Identifiable, Codable {
 
     var shortTitle: String {
         switch self {
-        case .standard: "色差標準"
-        case .reduced: "色差弱"
-        case .strong: "色差強"
-        case .monochrome: "モノクロ"
+        case .standard: L10n.string("色差標準")
+        case .reduced: L10n.string("色差弱")
+        case .strong: L10n.string("色差強")
+        case .monochrome: L10n.string("モノクロ")
         }
     }
 
     var compactTitle: String {
         switch self {
-        case .standard: "標準"
-        case .reduced: "色差 弱"
-        case .strong: "色差 強"
-        case .monochrome: "白黒"
+        case .standard: L10n.string("標準")
+        case .reduced: L10n.string("色差 弱")
+        case .strong: L10n.string("色差 強")
+        case .monochrome: L10n.string("白黒")
         }
     }
 
     var explanation: String {
         switch self {
         case .standard:
-            "色差情報を変更しません。"
+            L10n.string("色差情報を変更しません。")
         case .reduced:
-            "明るさはそのままに、色差の階調を控えめに整理します。"
+            L10n.string("明るさはそのままに、色差の階調を控えめに整理します。")
         case .strong:
-            "明るさはそのままに、色差の階調を大きく整理します。色の縞が見える場合があります。"
+            L10n.string("明るさはそのままに、色差の階調を大きく整理します。色の縞が見える場合があります。")
         case .monochrome:
-            "明るさだけを残し、色差を中立値に固定します。"
+            L10n.string("明るさだけを残し、色差を中立値に固定します。")
         }
     }
 }
@@ -281,13 +289,14 @@ enum CameraControlAdjustmentStyle: String, CaseIterable, Identifiable, Codable {
     case continuous = "連続"
 
     var id: Self { self }
+    var title: String { L10n.string(rawValue) }
 
     var explanation: String {
         switch self {
         case .stepped:
-            "シャッターとISOは1/3段または1段、色温度は100 K、色かぶりは5ずつ変更します。"
+            L10n.string("シャッターとISOは1/3段または1段、色温度は100 K、色かぶりは5ずつ変更します。")
         case .continuous:
-            "シャッターとISOは対数スライダー、ホワイトバランスは連続スライダーで変更します。"
+            L10n.string("シャッターとISOは対数スライダー、ホワイトバランスは連続スライダーで変更します。")
         }
     }
 }
@@ -297,6 +306,7 @@ enum WhiteBalanceControlMode: String, CaseIterable, Identifiable, Codable {
     case manual = "手動"
 
     var id: Self { self }
+    var title: String { L10n.string(rawValue) }
 }
 
 enum WhiteBalanceAdjustmentMode: String, CaseIterable, Identifiable, Codable {
@@ -304,6 +314,7 @@ enum WhiteBalanceAdjustmentMode: String, CaseIterable, Identifiable, Codable {
     case temperature = "色温度"
 
     var id: Self { self }
+    var title: String { L10n.string(rawValue) }
 }
 
 enum WhiteBalancePreset: String, CaseIterable, Identifiable, Codable {
@@ -315,15 +326,16 @@ enum WhiteBalancePreset: String, CaseIterable, Identifiable, Codable {
     case fluorescent = "蛍光灯"
 
     var id: Self { self }
+    var title: String { L10n.string(rawValue) }
 
     var shortTitle: String {
         switch self {
-        case .automatic: "自動"
-        case .daylight: "晴天"
-        case .cloudy: "曇天"
-        case .shade: "日陰"
-        case .tungsten: "電球"
-        case .fluorescent: "蛍光"
+        case .automatic: L10n.string("自動")
+        case .daylight: L10n.string("晴天")
+        case .cloudy: L10n.string("曇天")
+        case .shade: L10n.string("日陰")
+        case .tungsten: L10n.string("電球")
+        case .fluorescent: L10n.string("蛍光")
         }
     }
 
@@ -470,9 +482,17 @@ struct CameraSettingsPreset: Identifiable, Codable {
     var summary: String {
         switch settings.captureMode {
         case .photo:
-            "写真・\(settings.photoResolution.rawValue)・色 \(settings.colorLevels.title)"
+            L10n.format(
+                "写真・%@・色 %@",
+                settings.photoResolution.title,
+                settings.colorLevels.title
+            )
         case .video:
-            "動画・\(settings.videoResolution.rawValue)・\(settings.videoFrameRate.title)"
+            L10n.format(
+                "動画・%@・%@",
+                settings.videoResolution.rawValue,
+                settings.videoFrameRate.title
+            )
         }
     }
 }

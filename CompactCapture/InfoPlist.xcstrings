@@ -1,0 +1,30 @@
+{
+  "sourceLanguage" : "ja",
+  "strings" : {
+    "CFBundleDisplayName" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "CompactCapture" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "軽量カメラ" } }
+      }
+    },
+    "NSCameraUsageDescription" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Uses the camera to take photos and videos." } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "写真と動画を撮影するためにカメラを使用します。" } }
+      }
+    },
+    "NSMicrophoneUsageDescription" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Uses the microphone to record audio with videos." } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "動画に音声を記録するためにマイクを使用します。" } }
+      }
+    },
+    "NSPhotoLibraryAddUsageDescription" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Optionally adds photos and videos you choose to the Photos app." } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "ユーザーが選んだ写真と動画を任意で写真アプリへ追加します。" } }
+      }
+    }
+  },
+  "version" : "1.0"
+}

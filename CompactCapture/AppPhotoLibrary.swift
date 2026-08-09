@@ -215,9 +215,9 @@ enum PhotoLibraryExportError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .accessDenied:
-            "写真アプリへの追加が許可されていません。"
+            L10n.string("写真アプリへの追加が許可されていません。")
         case let .saveFailed(reason):
-            "写真アプリへ保存できませんでした：\(reason)"
+            L10n.format("写真アプリへ保存できませんでした：%@", reason)
         }
     }
 }
@@ -245,7 +245,7 @@ enum PhotoLibraryExporter {
                 } else {
                     completion(.failure(
                         PhotoLibraryExportError.saveFailed(
-                            error?.localizedDescription ?? "不明なエラー"
+                            error?.localizedDescription ?? L10n.string("不明なエラー")
                         )
                     ))
                 }
@@ -420,7 +420,7 @@ final class VideoAssetPlayerLoader: ObservableObject {
 
         guard FileManager.default.fileExists(atPath: item.fileURL.path) else {
             isLoading = false
-            errorMessage = "動画ファイルが見つかりません。"
+            errorMessage = L10n.string("動画ファイルが見つかりません。")
             return
         }
 
@@ -492,7 +492,8 @@ final class VideoAssetPlayerLoader: ObservableObject {
                 guard let self else { return }
                 self.isLoading = item.status == .unknown
                 if item.status == .failed {
-                    self.errorMessage = item.error?.localizedDescription ?? "動画を読み込めませんでした。"
+                    self.errorMessage = item.error?.localizedDescription
+                        ?? L10n.string("動画を読み込めませんでした。")
                 }
             }
         }

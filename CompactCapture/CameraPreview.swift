@@ -9,6 +9,7 @@ final class PreviewView: UIView {
     var onRotationAngleChanged: ((CGFloat) -> Void)?
 
     private var rotationCoordinator: AVCaptureDevice.RotationCoordinator?
+    private var rotationObservation: NSKeyValueObservation?
     private var rotationDeviceID: String?
     private var lastReportedRotationAngle: CGFloat?
 
@@ -26,8 +27,10 @@ final class PreviewView: UIView {
         self.onRotationAngleChanged = onRotationAngleChanged
         if previewLayer.session !== session {
             previewLayer.session = session
+            rotationObservation = nil
             rotationCoordinator = nil
             rotationDeviceID = nil
+            lastReportedRotationAngle = nil
         }
         refreshRotationCoordinatorIfNeeded()
         applyPreviewOrientation()
@@ -41,19 +44,34 @@ final class PreviewView: UIView {
 
         let device = deviceInput.device
         guard rotationDeviceID != device.uniqueID else { return }
-        rotationDeviceID = device.uniqueID
-        rotationCoordinator = AVCaptureDevice.RotationCoordinator(
+
+        rotationObservation = nil
+        let coordinator = AVCaptureDevice.RotationCoordinator(
             device: device,
             previewLayer: previewLayer
         )
+        rotationDeviceID = device.uniqueID
+        rotationCoordinator = coordinator
+        rotationObservation = coordinator.observe(
+            \.videoRotationAngleForHorizonLevelPreview,
+            options: [.initial, .new]
+        ) { [weak self] coordinator, _ in
+            self?.applyPreviewOrientation(
+                angle: coordinator.videoRotationAngleForHorizonLevelPreview
+            )
+        }
     }
 
     private func applyPreviewOrientation() {
-        // Preserve the existing portrait-only iPhone experience. iPad follows the
-        // physical orientation because its interface supports all four orientations.
-        let reportedAngle = traitCollection.userInterfaceIdiom == .pad
-            ? rotationCoordinator?.videoRotationAngleForHorizonLevelPreview ?? 90
-            : 90
+        applyPreviewOrientation(
+            angle: rotationCoordinator?.videoRotationAngleForHorizonLevelPreview ?? 90
+        )
+    }
+
+    private func applyPreviewOrientation(angle reportedAngle: CGFloat) {
+        // iPadOS can resize or visually rotate a scene even when the app prefers
+        // portrait. Follow the camera's physical rotation so both preview paths
+        // remain upright in that compatibility case as well.
         let angle = normalizedRotationAngle(reportedAngle)
         if let connection = previewLayer.connection,
            connection.isVideoRotationAngleSupported(angle) {

@@ -4,6 +4,8 @@
 
 CompactCapture is an iPhone and iPad camera app that gives you direct control over resolution, color detail, contrast, video bitrate, and storage-oriented capture settings.
 
+The interface is available in English and Japanese.
+
 ## Key features
 
 - Photos in PNG, JPEG, or HEIF, from the device's maximum resolution down to 0.025 MP
@@ -14,7 +16,7 @@ CompactCapture is an iPhone and iPad camera app that gives you direct control ov
 - Device-aware zoom presets from 0.5× up to 15×, plus pinch-to-zoom
 - Named capture presets
 - Built-in photo and video library with optional export to the system Photos app
-- Portrait-only interface on iPhone and portrait or landscape support on iPad
+- Portrait-first interface, with previews kept upright if iPadOS resizes or rotates the scene
 - Capture orientation stored correctly in saved photos and videos
 
 See [README_ja.md](README_ja.md) for the complete feature reference and detailed build notes.
