@@ -1,12 +1,15 @@
-# CompactCapture サポート
+# CompactCapture Support
 
-CompactCaptureに関する不具合報告、質問、機能要望は、[GitHub Issues](https://github.com/early277/CompactCapture/issues)から受け付けます。
+**English** | [日本語](SUPPORT_ja.md)
 
-不具合を報告する場合は、個人情報や撮影データを含めず、次の情報を可能な範囲で記載してください。
+Questions, feature requests, and bug reports are accepted through [GitHub Issues](https://github.com/early277/CompactCapture/issues).
 
-- iPhoneまたはiPadの機種
-- iOS / iPadOSのバージョン
-- CompactCaptureのバージョン
-- 再現手順と期待した結果
+When reporting a problem, do not include personal information or captured media. If possible, include:
 
-プライバシーについては、[プライバシーポリシー](PRIVACY_POLICY.md)をご覧ください。
+- iPhone or iPad model
+- iOS or iPadOS version
+- CompactCapture version
+- Steps to reproduce the problem
+- Expected and actual results
+
+For information about data handling, read the [Privacy Policy](PRIVACY_POLICY.md).

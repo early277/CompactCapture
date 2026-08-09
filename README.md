@@ -1,34 +1,47 @@
 # CompactCapture
 
-CompactCaptureは、写真・動画の解像度、色の細かさ、コントラスト、ビットレートなどを自分で選び、保存容量とピクセル表現を調整できるiPhone / iPad向けカメラアプリです。
+**English** | [日本語](README_ja.md)
 
-## 主な特徴
+CompactCapture is an iPhone and iPad camera app that gives you direct control over resolution, color detail, contrast, video bitrate, and storage-oriented capture settings.
 
-- 写真: PNG / JPEG / HEIF、最大解像度から0.025 MPまで選択
-- 動画: HEVC / H.264、対応端末ではProRes 4444、4Kから160×90まで選択
-- 色の細かさ、コントラスト、整数倍保存を写真・動画に適用
-- ISO、シャッター、露出補正、ホワイトバランスを調整
-- 0.5×から最大15×まで、端末に合わせた代表倍率とピンチズーム
-- 名前付き撮影プリセット
-- アプリ内ギャラリーと、任意の写真アプリ追加保存
-- iPhoneは縦向きUI、iPadは縦横両対応。保存データには撮影時の端末方向を反映
+## Key features
 
-詳しい仕様とビルド方法は [README_ja.md](README_ja.md) をご覧ください。
+- Photos in PNG, JPEG, or HEIF, from the device's maximum resolution down to 0.025 MP
+- Video in HEVC or H.264, plus ProRes 4444 on supported devices, from 4K down to 160 × 90
+- Adjustable color detail, contrast, compression quality, and video bitrate
+- Nearest-neighbor integer scaling for crisp low-resolution pixels
+- Manual ISO, shutter speed, exposure compensation, and white balance controls
+- Device-aware zoom presets from 0.5× up to 15×, plus pinch-to-zoom
+- Named capture presets
+- Built-in photo and video library with optional export to the system Photos app
+- Portrait-only interface on iPhone and portrait or landscape support on iPad
+- Capture orientation stored correctly in saved photos and videos
 
-## 動作環境
+See [README_ja.md](README_ja.md) for the complete feature reference and detailed build notes.
 
-- iOS / iPadOS 17.0以降
-- Xcode 16以降を推奨
-- カメラ機能の確認には実機が必要です
+## Requirements
 
-## プライバシー
+- iOS / iPadOS 17.0 or later
+- Xcode 16 or later recommended
+- A physical device is required to test camera capture
 
-[プライバシーポリシー](PRIVACY_POLICY.md)をご覧ください。
+## Open the project
 
-## サポート
+1. Open `CompactCapture.xcodeproj` in Xcode.
+2. Select your own Team under Signing & Capabilities.
+3. Change the Bundle Identifier if it conflicts with an existing app identifier.
+4. Build and run on a physical iPhone or iPad.
 
-[サポート情報](SUPPORT.md)をご覧ください。不具合報告や質問はGitHub Issuesで受け付けます。
+No Apple Developer Team ID, provisioning profile, signing certificate, or Xcode user data is included in this repository.
 
-## ライセンス
+## Privacy
 
-このプロジェクトは [MIT License](LICENSE) で公開されています。
+Read the [Privacy Policy](PRIVACY_POLICY.md) or [プライバシーポリシー](PRIVACY_POLICY_ja.md).
+
+## Support
+
+Read [Support](SUPPORT.md) or [サポート](SUPPORT_ja.md). Questions and bug reports are accepted through GitHub Issues.
+
+## License
+
+This project is available under the [MIT License](LICENSE).

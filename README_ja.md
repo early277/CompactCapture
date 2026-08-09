@@ -1,5 +1,7 @@
 # 軽量カメラ（CompactCapture）
 
+[English](README.md) | **日本語**
+
 iPhone／iPadで、保存容量とピクセル表現を自分で制御しながら写真・動画を撮影するカメラアプリです。
 
 ## 今回の主な機能
