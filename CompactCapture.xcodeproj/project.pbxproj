@@ -1,0 +1,310 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A10000000000000000000001 /* CompactCaptureApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000001 /* CompactCaptureApp.swift */; };
+		A10000000000000000000002 /* CaptureModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000002 /* CaptureModels.swift */; };
+		A10000000000000000000003 /* CameraPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000003 /* CameraPreview.swift */; };
+		A10000000000000000000004 /* PhotoProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000004 /* PhotoProcessor.swift */; };
+		A10000000000000000000005 /* VideoRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000005 /* VideoRecorder.swift */; };
+		A10000000000000000000006 /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000006 /* CameraController.swift */; };
+		A10000000000000000000007 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000007 /* ContentView.swift */; };
+		A10000000000000000000008 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000008 /* Assets.xcassets */; };
+		A10000000000000000000009 /* LivePreviewProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000000C /* LivePreviewProcessor.swift */; };
+		A1000000000000000000000A /* AppPhotoLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000000D /* AppPhotoLibrary.swift */; };
+		A1000000000000000000000B /* RecordingCuePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000000E /* RecordingCuePlayer.swift */; };
+		A1000000000000000000000C /* RecordStart.wav in Resources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000000F /* RecordStart.wav */; };
+		A1000000000000000000000D /* RecordEnd.wav in Resources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000010 /* RecordEnd.wav */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		A20000000000000000000001 /* CompactCaptureApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompactCaptureApp.swift; sourceTree = "<group>"; };
+		A20000000000000000000002 /* CaptureModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureModels.swift; sourceTree = "<group>"; };
+		A20000000000000000000003 /* CameraPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPreview.swift; sourceTree = "<group>"; };
+		A20000000000000000000004 /* PhotoProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoProcessor.swift; sourceTree = "<group>"; };
+		A20000000000000000000005 /* VideoRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoRecorder.swift; sourceTree = "<group>"; };
+		A20000000000000000000006 /* CameraController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
+		A20000000000000000000007 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		A20000000000000000000008 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A20000000000000000000009 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A2000000000000000000000A /* CompactCapture.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CompactCapture.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A2000000000000000000000B /* README_ja.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README_ja.md; sourceTree = "<group>"; };
+		A2000000000000000000000C /* LivePreviewProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LivePreviewProcessor.swift; sourceTree = "<group>"; };
+		A2000000000000000000000D /* AppPhotoLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppPhotoLibrary.swift; sourceTree = "<group>"; };
+		A2000000000000000000000E /* RecordingCuePlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingCuePlayer.swift; sourceTree = "<group>"; };
+		A2000000000000000000000F /* RecordStart.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = RecordStart.wav; sourceTree = "<group>"; };
+		A20000000000000000000010 /* RecordEnd.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = RecordEnd.wav; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A30000000000000000000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A40000000000000000000001 = {
+			isa = PBXGroup;
+			children = (
+				A40000000000000000000002 /* CompactCapture */,
+				A2000000000000000000000B /* README_ja.md */,
+				A40000000000000000000003 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A40000000000000000000002 /* CompactCapture */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000001 /* CompactCaptureApp.swift */,
+				A20000000000000000000007 /* ContentView.swift */,
+				A20000000000000000000006 /* CameraController.swift */,
+				A20000000000000000000003 /* CameraPreview.swift */,
+				A2000000000000000000000C /* LivePreviewProcessor.swift */,
+				A2000000000000000000000D /* AppPhotoLibrary.swift */,
+				A2000000000000000000000E /* RecordingCuePlayer.swift */,
+				A20000000000000000000002 /* CaptureModels.swift */,
+				A20000000000000000000004 /* PhotoProcessor.swift */,
+				A20000000000000000000005 /* VideoRecorder.swift */,
+				A20000000000000000000008 /* Assets.xcassets */,
+				A40000000000000000000004 /* RecordingCues */,
+				A20000000000000000000009 /* Info.plist */,
+			);
+			path = CompactCapture;
+			sourceTree = "<group>";
+		};
+		A40000000000000000000003 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A2000000000000000000000A /* CompactCapture.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A40000000000000000000004 /* RecordingCues */ = {
+			isa = PBXGroup;
+			children = (
+				A2000000000000000000000F /* RecordStart.wav */,
+				A20000000000000000000010 /* RecordEnd.wav */,
+			);
+			path = RecordingCues;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A50000000000000000000001 /* CompactCapture */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A90000000000000000000002 /* Build configuration list for PBXNativeTarget "CompactCapture" */;
+			buildPhases = (
+				A70000000000000000000001 /* Sources */,
+				A30000000000000000000001 /* Frameworks */,
+				A80000000000000000000001 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CompactCapture;
+			productName = CompactCapture;
+			productReference = A2000000000000000000000A /* CompactCapture.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A60000000000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					A50000000000000000000001 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+				};
+			};
+			buildConfigurationList = A90000000000000000000001 /* Build configuration list for PBXProject "CompactCapture" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = ja;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				ja,
+				Base,
+			);
+			mainGroup = A40000000000000000000001;
+			productRefGroup = A40000000000000000000003 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A50000000000000000000001 /* CompactCapture */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A80000000000000000000001 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10000000000000000000008 /* Assets.xcassets in Resources */,
+				A1000000000000000000000C /* RecordStart.wav in Resources */,
+				A1000000000000000000000D /* RecordEnd.wav in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A70000000000000000000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10000000000000000000001 /* CompactCaptureApp.swift in Sources */,
+				A10000000000000000000002 /* CaptureModels.swift in Sources */,
+				A10000000000000000000003 /* CameraPreview.swift in Sources */,
+				A10000000000000000000004 /* PhotoProcessor.swift in Sources */,
+				A10000000000000000000005 /* VideoRecorder.swift in Sources */,
+				A10000000000000000000006 /* CameraController.swift in Sources */,
+				A10000000000000000000007 /* ContentView.swift in Sources */,
+				A10000000000000000000009 /* LivePreviewProcessor.swift in Sources */,
+				A1000000000000000000000A /* AppPhotoLibrary.swift in Sources */,
+				A1000000000000000000000B /* RecordingCuePlayer.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		AA0000000000000000000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		AA0000000000000000000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		AA0000000000000000000003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 23;
+				DEVELOPMENT_ASSET_PATHS = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = CompactCapture/Info.plist;
+				MARKETING_VERSION = 1.19;
+				OTHER_SWIFT_FLAGS = "$(inherited) -Xcc -DCI_SILENCE_GL_DEPRECATION";
+				PRODUCT_BUNDLE_IDENTIFIER = jp.abyos.CompactCapture;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = minimal;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		AA0000000000000000000004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 23;
+				DEVELOPMENT_ASSET_PATHS = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = CompactCapture/Info.plist;
+				MARKETING_VERSION = 1.19;
+				OTHER_SWIFT_FLAGS = "$(inherited) -Xcc -DCI_SILENCE_GL_DEPRECATION";
+				PRODUCT_BUNDLE_IDENTIFIER = jp.abyos.CompactCapture;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = minimal;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A90000000000000000000001 /* Build configuration list for PBXProject "CompactCapture" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AA0000000000000000000001 /* Debug */,
+				AA0000000000000000000002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A90000000000000000000002 /* Build configuration list for PBXNativeTarget "CompactCapture" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AA0000000000000000000003 /* Debug */,
+				AA0000000000000000000004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A60000000000000000000001 /* Project object */;
+}

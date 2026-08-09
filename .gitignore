@@ -1,0 +1,9 @@
+.DS_Store
+DerivedData/
+build/
+.tools/
+*.xcuserstate
+*.xccheckout
+*.xcscmblueprint
+xcuserdata/
+*.xcodeproj/xcuserdata/
