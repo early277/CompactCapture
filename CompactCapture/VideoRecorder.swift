@@ -15,12 +15,14 @@ enum VideoRecorderError: LocalizedError {
 
     var errorDescription: String? {
         switch self {
-        case .alreadyRecording: "すでに録画中です。"
-        case .noVideoFrames: "動画フレームを取得できませんでした。"
-        case .writerCreationFailed: "動画ファイルを作成できませんでした。"
-        case .unsupportedSettings: "この端末では指定した動画設定を使用できません。"
-        case .pixelBufferCreationFailed: "色の細かさを変換するためのバッファを作成できませんでした。"
-        case let .appendFailed(message): "動画の書き込みに失敗しました。\n\(message)"
+        case .alreadyRecording: L10n.string("すでに録画中です。")
+        case .noVideoFrames: L10n.string("動画フレームを取得できませんでした。")
+        case .writerCreationFailed: L10n.string("動画ファイルを作成できませんでした。")
+        case .unsupportedSettings: L10n.string("この端末では指定した動画設定を使用できません。")
+        case .pixelBufferCreationFailed:
+            L10n.string("色の細かさを変換するためのバッファを作成できませんでした。")
+        case let .appendFailed(message):
+            L10n.format("動画の書き込みに失敗しました。\n%@", message)
         }
     }
 }
@@ -105,7 +107,9 @@ final class VideoRecorder: NSObject, AVCaptureVideoDataOutputSampleBufferDelegat
                     self.finishWithSuccess(url)
                 } else {
                     self.finishWithFailure(
-                        VideoRecorderError.appendFailed(writer.error?.localizedDescription ?? "不明なエラー")
+                        VideoRecorderError.appendFailed(
+                            writer.error?.localizedDescription ?? L10n.string("不明なエラー")
+                        )
                     )
                 }
             }
@@ -181,7 +185,9 @@ final class VideoRecorder: NSObject, AVCaptureVideoDataOutputSampleBufferDelegat
             lastAcceptedVideoTime = presentationTime
         } else if let writer, writer.status == .failed {
             finishWithFailure(
-                VideoRecorderError.appendFailed(writer.error?.localizedDescription ?? "フレームを追加できませんでした。")
+                VideoRecorderError.appendFailed(
+                    writer.error?.localizedDescription ?? L10n.string("フレームを追加できませんでした。")
+                )
             )
         }
     }
@@ -198,7 +204,9 @@ final class VideoRecorder: NSObject, AVCaptureVideoDataOutputSampleBufferDelegat
 
         if !audioInput.append(sampleBuffer), let writer, writer.status == .failed {
             finishWithFailure(
-                VideoRecorderError.appendFailed(writer.error?.localizedDescription ?? "音声を追加できませんでした。")
+                VideoRecorderError.appendFailed(
+                    writer.error?.localizedDescription ?? L10n.string("音声を追加できませんでした。")
+                )
             )
         }
     }
@@ -300,7 +308,9 @@ final class VideoRecorder: NSObject, AVCaptureVideoDataOutputSampleBufferDelegat
         }
 
         guard writer.startWriting() else {
-            throw VideoRecorderError.appendFailed(writer.error?.localizedDescription ?? "書き込みを開始できませんでした。")
+            throw VideoRecorderError.appendFailed(
+                writer.error?.localizedDescription ?? L10n.string("書き込みを開始できませんでした。")
+            )
         }
         writer.startSession(atSourceTime: startTime)
 

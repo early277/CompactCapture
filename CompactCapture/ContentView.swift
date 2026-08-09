@@ -101,7 +101,7 @@ struct ContentView: View {
 
             Picker("撮影", selection: $camera.captureMode) {
                 ForEach(CaptureMode.allCases) { mode in
-                    Text(mode.rawValue).tag(mode)
+                    Text(mode.title).tag(mode)
                 }
             }
             .pickerStyle(.segmented)
@@ -267,49 +267,77 @@ struct ContentView: View {
         .opacity((!camera.isConfigured || camera.isBusy) ? 0.5 : 1)
         .accessibilityLabel(
             camera.isRecording
-                ? "録画を停止"
-                : camera.captureMode == .photo ? "写真を撮影" : "録画を開始"
+                ? L10n.string("録画を停止")
+                : camera.captureMode == .photo
+                    ? L10n.string("写真を撮影")
+                    : L10n.string("録画を開始")
         )
     }
 
     private var summaryText: String {
         let scale = camera.pixelUpscaleFactor == .one
             ? ""
-            : "・\(camera.pixelUpscaleFactor.title)保存"
+            : L10n.format("・%@保存", camera.pixelUpscaleFactor.title)
         let contrast = camera.contrast == .standard
             ? ""
-            : "・コントラスト \(camera.contrast.summaryTitle)"
+            : L10n.format("・コントラスト %@", camera.contrast.summaryTitle)
         switch camera.captureMode {
         case .photo:
             let appliedScale = camera.photoFormat == .png ? scale : ""
-            return "\(camera.photoFormat.rawValue)・\(camera.photoResolution.rawValue)\(appliedScale)・色 \(camera.colorLevels.title)\(contrast)・\(exposureSummary)・\(whiteBalanceSummary)"
+            return L10n.format(
+                "%@・%@%@・色 %@%@・%@・%@",
+                camera.photoFormat.rawValue,
+                camera.photoResolution.title,
+                appliedScale,
+                camera.colorLevels.title,
+                contrast,
+                exposureSummary,
+                whiteBalanceSummary
+            )
         case .video:
             let rate = camera.videoCodec.supportsBitRateSelection
                 ? "・\(camera.videoBitRate.title)"
                 : ""
-            return "\(camera.videoResolution.rawValue)\(scale)・\(camera.videoFrameRate.title)・\(camera.videoCodec.shortTitle)\(rate)・色 \(camera.colorLevels.shortTitle)\(contrast)・\(exposureSummary)"
+            return L10n.format(
+                "%@%@・%@・%@%@・色 %@%@・%@",
+                camera.videoResolution.rawValue,
+                scale,
+                camera.videoFrameRate.title,
+                camera.videoCodec.shortTitle,
+                rate,
+                camera.colorLevels.shortTitle,
+                contrast,
+                exposureSummary
+            )
         }
     }
 
     private var exposureSummary: String {
         switch (camera.isShutterLocked, camera.isISOLocked) {
         case (false, false):
-            return "露出自動"
+            return L10n.string("露出自動")
         case (true, false):
-            return "SS \(camera.formatShutter(camera.shutterSeconds))・ISO自動"
+            return L10n.format(
+                "SS %@・ISO自動",
+                camera.formatShutter(camera.shutterSeconds)
+            )
         case (false, true):
-            return "ISO \(Int(camera.iso.rounded()))・SS自動"
+            return L10n.format("ISO %d・SS自動", Int(camera.iso.rounded()))
         case (true, true):
-            return "\(camera.formatShutter(camera.shutterSeconds))・ISO \(Int(camera.iso.rounded()))"
+            return L10n.format(
+                "%@・ISO %d",
+                camera.formatShutter(camera.shutterSeconds),
+                Int(camera.iso.rounded())
+            )
         }
     }
 
     private var whiteBalanceSummary: String {
         switch camera.whiteBalanceAdjustmentMode {
         case .preset:
-            return "WB \(camera.whiteBalancePreset.shortTitle)"
+            return L10n.format("WB %@", camera.whiteBalancePreset.shortTitle)
         case .temperature:
-            return "WB \(Int(camera.whiteBalanceTemperature.rounded()))K"
+            return L10n.format("WB %dK", Int(camera.whiteBalanceTemperature.rounded()))
         }
     }
 
@@ -378,7 +406,9 @@ private struct CameraZoomControl: View {
                         .buttonStyle(.plain)
                         .disabled(camera.isBusy || !selectable)
                         .opacity(selectable ? 1 : 0.28)
-                        .accessibilityLabel("ズーム \(factorLabel(factor))")
+                        .accessibilityLabel(
+                            L10n.format("ズーム %@", factorLabel(factor))
+                        )
                     }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
@@ -453,7 +483,7 @@ private struct CaptureSettingsView: View {
                     title: "撮影",
                     selection: $camera.captureMode,
                     options: CaptureMode.allCases,
-                    label: { $0.rawValue },
+                    label: { $0.title },
                     icon: { $0 == .photo ? "camera.fill" : "video.fill" }
                 )
 
@@ -553,7 +583,10 @@ private struct CaptureSettingsView: View {
         )
 
         if camera.photoFormat == .png {
-            CompactReadOnlyRow(title: "圧縮品質", value: "可逆圧縮（劣化なし）")
+            CompactReadOnlyRow(
+                title: "圧縮品質",
+                value: L10n.string("可逆圧縮（劣化なし）")
+            )
         } else {
             CompactChoiceRow(
                 title: "圧縮品質",
@@ -603,7 +636,7 @@ private struct CaptureSettingsView: View {
         } else {
             CompactReadOnlyRow(
                 title: "ビットレート",
-                value: "自動・\(camera.estimatedVideoSizeText)"
+                value: L10n.format("自動・%@", camera.estimatedVideoSizeText)
             )
         }
 
@@ -619,7 +652,7 @@ private struct CaptureSettingsView: View {
             title: "音声",
             selection: $camera.includeAudio,
             options: [true, false],
-            label: { $0 ? "あり" : "なし" },
+            label: { $0 ? L10n.string("あり") : L10n.string("なし") },
             icon: { $0 ? "speaker.wave.2.fill" : "speaker.slash.fill" },
             detail: { camera.estimatedVideoChoiceSizeText(includeAudio: $0) }
         )
@@ -652,7 +685,9 @@ private struct CaptureSettingsView: View {
         CompactSwitchValueRow(
             title: "写真アプリ",
             isOn: $camera.saveToPhotoLibraryEnabled,
-            value: camera.saveToPhotoLibraryEnabled ? "同時保存" : "アプリ内のみ"
+            value: camera.saveToPhotoLibraryEnabled
+                ? L10n.string("同時保存")
+                : L10n.string("アプリ内のみ")
         )
 
         ISOControlRow(camera: camera) {
@@ -669,7 +704,7 @@ private struct CaptureSettingsView: View {
             title: "WB方式",
             selection: $camera.whiteBalanceAdjustmentMode,
             options: WhiteBalanceAdjustmentMode.allCases,
-            label: { $0.rawValue },
+            label: { $0.title },
             icon: { $0 == .preset ? "camera.fill" : "thermometer.sun.fill" }
         )
 
@@ -684,7 +719,11 @@ private struct CaptureSettingsView: View {
         } else {
             CompactActionRow(
                 title: "色温度",
-                value: "\(Int(camera.whiteBalanceTemperature.rounded())) K・色かぶり \(String(format: "%+.0f", camera.whiteBalanceTint))",
+                value: L10n.format(
+                    "%d K・色かぶり %+.0f",
+                    Int(camera.whiteBalanceTemperature.rounded()),
+                    camera.whiteBalanceTint
+                ),
                 buttonTitle: "変更"
             ) {
                 showTemperatureDetail = true
@@ -865,7 +904,7 @@ private struct CompactChoiceRow<Option: Hashable>: View {
                                             ? style.tint
                                             : Color.secondary.opacity(iconName == nil ? 0.48 : 0.82)
                                     )
-                                Text(label(option))
+                                Text(LocalizedStringKey(label(option)))
                                     .font(.system(
                                         size: detailText == nil ? 10.2 : 9.0,
                                         weight: selected ? .semibold : .regular
@@ -954,7 +993,7 @@ private struct CompactGridChoiceRow<Option: Hashable>: View {
                                     .foregroundStyle(
                                         selected ? style.tint : Color.secondary.opacity(0.48)
                                     )
-                                Text(label(option))
+                                Text(LocalizedStringKey(label(option)))
                                     .font(.system(
                                         size: detailText == nil ? 9.4 : 8.1,
                                         weight: selected ? .semibold : .regular
@@ -1026,7 +1065,7 @@ private struct CompactActionRow: View {
                 .lineLimit(1)
                 .minimumScaleFactor(0.58)
             Spacer(minLength: 2)
-            Button(buttonTitle, action: action)
+            Button(LocalizedStringKey(buttonTitle), action: action)
                 .buttonStyle(.bordered)
                 .controlSize(.mini)
                 .tint(settingVisualStyle(for: title).tint)
@@ -1113,7 +1152,11 @@ private struct PixelUpscaleSettingRow: View {
             .frame(maxWidth: .infinity)
         }
         .compactSettingContainer(title: "出力倍率")
-        .accessibilityHint(applies ? "最近傍法で整数倍保存" : "PNGのときだけ写真へ適用")
+        .accessibilityHint(
+            applies
+                ? L10n.string("最近傍法で整数倍保存")
+                : L10n.string("PNGのときだけ写真へ適用")
+        )
     }
 }
 
@@ -1310,7 +1353,7 @@ private struct CorrectionsSettingRow: View {
         Button {
             isOn.wrappedValue.toggle()
         } label: {
-            Text(title)
+            Text(LocalizedStringKey(title))
                 .font(.system(size: 8.8, weight: isOn.wrappedValue ? .semibold : .regular))
                 .lineLimit(1)
                 .minimumScaleFactor(0.48)
@@ -1358,7 +1401,7 @@ private struct SteppedStopControl: View {
             guard enabled else { return }
             value = values[destination]
         } label: {
-            Text(title)
+            Text(LocalizedStringKey(title))
                 .font(.system(size: 11, weight: .medium))
                 .lineLimit(1)
                 .minimumScaleFactor(0.66)
@@ -1378,9 +1421,17 @@ private struct ShutterDetailView: View {
         NavigationStack {
             VStack(spacing: 18) {
                 HStack {
-                    Text(camera.isShutterLocked ? "シャッター固定中" : "シャッター自動")
+                    Text(
+                        camera.isShutterLocked
+                            ? L10n.string("シャッター固定中")
+                            : L10n.string("シャッター自動")
+                    )
                     Spacer()
-                    Button(camera.isShutterLocked ? "固定解除" : "現在値で固定") {
+                    Button(
+                        camera.isShutterLocked
+                            ? L10n.string("固定解除")
+                            : L10n.string("現在値で固定")
+                    ) {
                         camera.toggleShutterLock()
                     }
                     .buttonStyle(.borderedProminent)
@@ -1388,7 +1439,7 @@ private struct ShutterDetailView: View {
 
                 Picker("操作", selection: $camera.cameraControlAdjustmentStyle) {
                     ForEach(CameraControlAdjustmentStyle.allCases) { style in
-                        Text(style.rawValue).tag(style)
+                        Text(style.title).tag(style)
                     }
                 }
                 .pickerStyle(.segmented)
@@ -1412,7 +1463,10 @@ private struct ShutterDetailView: View {
                     ContentUnavailableView(
                         "シャッターは自動",
                         systemImage: "camera.aperture",
-                        description: Text("現在 \(camera.formatShutter(camera.measuredShutterSeconds))")
+                        description: Text(L10n.format(
+                            "現在 %@",
+                            camera.formatShutter(camera.measuredShutterSeconds)
+                        ))
                     )
                 }
                 Spacer()
@@ -1455,9 +1509,17 @@ private struct ISODetailView: View {
         NavigationStack {
             VStack(spacing: 18) {
                 HStack {
-                    Text(camera.isISOLocked ? "ISO固定中" : "ISO自動")
+                    Text(
+                        camera.isISOLocked
+                            ? L10n.string("ISO固定中")
+                            : L10n.string("ISO自動")
+                    )
                     Spacer()
-                    Button(camera.isISOLocked ? "固定解除" : "現在値で固定") {
+                    Button(
+                        camera.isISOLocked
+                            ? L10n.string("固定解除")
+                            : L10n.string("現在値で固定")
+                    ) {
                         camera.toggleISOLock()
                     }
                     .buttonStyle(.borderedProminent)
@@ -1465,7 +1527,7 @@ private struct ISODetailView: View {
 
                 Picker("操作", selection: $camera.cameraControlAdjustmentStyle) {
                     ForEach(CameraControlAdjustmentStyle.allCases) { style in
-                        Text(style.rawValue).tag(style)
+                        Text(style.title).tag(style)
                     }
                 }
                 .pickerStyle(.segmented)
@@ -1489,7 +1551,10 @@ private struct ISODetailView: View {
                     ContentUnavailableView(
                         "ISOは自動",
                         systemImage: "camera.metering.center.weighted",
-                        description: Text("現在 ISO \(Int(camera.measuredISO.rounded()))")
+                        description: Text(L10n.format(
+                            "現在 ISO %d",
+                            Int(camera.measuredISO.rounded())
+                        ))
                     )
                 }
                 Spacer()
@@ -1533,7 +1598,7 @@ private struct WhiteBalanceTemperatureDetailView: View {
             VStack(spacing: 18) {
                 Picker("操作", selection: $camera.cameraControlAdjustmentStyle) {
                     ForEach(CameraControlAdjustmentStyle.allCases) { style in
-                        Text(style.rawValue).tag(style)
+                        Text(style.title).tag(style)
                     }
                 }
                 .pickerStyle(.segmented)
@@ -1569,7 +1634,7 @@ private struct WhiteBalanceTemperatureDetailView: View {
 
     private func valueHeader(title: String, value: String) -> some View {
         HStack {
-            Text(title)
+            Text(LocalizedStringKey(title))
             Spacer()
             Text(value).monospacedDigit()
         }
@@ -1618,7 +1683,10 @@ private struct AppMediaGalleryView: View {
                 galleryContent
 
                 VStack(spacing: 7) {
-                    Text("使用量 \(library.totalSizeText)・削除は詳細画面から")
+                    Text(L10n.format(
+                        "使用量 %@・削除は詳細画面から",
+                        library.totalSizeText
+                    ))
                         .font(.caption2)
                         .foregroundStyle(.secondary)
                         .lineLimit(1)
@@ -1758,7 +1826,7 @@ private struct MediaAssetViewer: View {
                                 systemImage: item.kind.symbolName
                             )
                             .font(.caption.monospacedDigit())
-                            Text("容量 \(fileSizeText(item))")
+                            Text(L10n.format("容量 %@", fileSizeText(item)))
                                 .font(.caption2.monospacedDigit())
                                 .foregroundStyle(.white.opacity(0.82))
                         }
@@ -1798,8 +1866,8 @@ private struct MediaAssetViewer: View {
                         .disabled(isExporting || exportedIDs.contains(item.id))
                         .accessibilityLabel(
                             exportedIDs.contains(item.id)
-                                ? "写真アプリへ保存済み"
-                                : "写真アプリへ保存"
+                                ? L10n.string("写真アプリへ保存済み")
+                                : L10n.string("写真アプリへ保存")
                         )
 
                         Button {
@@ -1817,7 +1885,11 @@ private struct MediaAssetViewer: View {
                 HStack {
                     navigationButton(systemImage: "chevron.left", offset: -1)
                     Spacer()
-                    Text("\(selectedIndex + 1) / \(items.count)・左右スワイプ")
+                    Text(L10n.format(
+                        "%d / %d・左右スワイプ",
+                        selectedIndex + 1,
+                        items.count
+                    ))
                         .font(.caption2.weight(.semibold).monospacedDigit())
                         .padding(.horizontal, 10)
                         .padding(.vertical, 6)
@@ -1900,7 +1972,7 @@ private struct MediaAssetViewer: View {
                 case .success:
                     self.exportedIDs.insert(selectedItem.id)
                     self.onExported(selectedItem)
-                    self.exportMessage = "写真アプリへ保存しました。"
+                    self.exportMessage = L10n.string("写真アプリへ保存しました。")
                 case let .failure(error):
                     self.exportMessage = error.localizedDescription
                 }
@@ -2318,7 +2390,7 @@ private func settingLabel(_ title: String) -> some View {
                 in: RoundedRectangle(cornerRadius: 5, style: .continuous)
             )
 
-        Text(title)
+        Text(LocalizedStringKey(title))
             .font(.system(size: 10.5, weight: .semibold))
             .lineLimit(1)
             .minimumScaleFactor(0.52)
@@ -2327,7 +2399,7 @@ private func settingLabel(_ title: String) -> some View {
 }
 
 private func stopButtonLabel(_ title: String) -> some View {
-    Text(title)
+    Text(LocalizedStringKey(title))
         .font(.system(size: 8.8, weight: .medium))
         .lineLimit(1)
         .minimumScaleFactor(0.48)
@@ -2345,7 +2417,7 @@ private func lockButton(
     action: @escaping () -> Void
 ) -> some View {
     Button(action: action) {
-        Text(title)
+        Text(LocalizedStringKey(title))
             .font(.system(size: 8.8, weight: isLocked ? .bold : .regular))
             .lineLimit(1)
             .frame(width: 31)

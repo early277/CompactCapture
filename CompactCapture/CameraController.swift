@@ -24,7 +24,7 @@ final class CameraController: NSObject, ObservableObject {
     @Published private(set) var lastCapturedPhotoPreview: UIImage?
     @Published private(set) var lastCapturedPhotoInformation = ""
     @Published private(set) var livePreviewImage: CGImage?
-    @Published private(set) var livePreviewDimensionsText = "解像度を確認中…"
+    @Published private(set) var livePreviewDimensionsText = L10n.string("解像度を確認中…")
     @Published private(set) var zoomFactor = 1.0
     @Published private(set) var minimumZoomFactor = 1.0
     @Published private(set) var maximumZoomFactor = 1.0
@@ -32,7 +32,7 @@ final class CameraController: NSObject, ObservableObject {
     @Published private(set) var activeLensMaximumZoomFactor = 1.0
     @Published private(set) var zoomQuickFactors: [Double] = [1.0]
     @Published private(set) var savedPresets: [CameraSettingsPreset] = []
-    @Published var statusMessage = "カメラを準備しています…"
+    @Published var statusMessage = L10n.string("カメラを準備しています…")
 
     @Published var captureMode: CaptureMode = .photo {
         didSet {
@@ -203,7 +203,7 @@ final class CameraController: NSObject, ObservableObject {
     @Published private(set) var measuredShutterSeconds = 1.0 / 60.0
     @Published private(set) var measuredISO = 100.0
     @Published private(set) var measuredExposureOffset = 0.0
-    @Published private(set) var exposureAutomationStatus = "露出自動"
+    @Published private(set) var exposureAutomationStatus = L10n.string("露出自動")
     @Published private(set) var minimumShutterSeconds = 1.0 / 8_000.0
     @Published private(set) var maximumShutterSeconds = 1.0
     @Published private(set) var minimumISO = 25.0
@@ -264,7 +264,7 @@ final class CameraController: NSObject, ObservableObject {
 
     var estimatedVideoSizeText: String {
         let config = currentVideoConfiguration
-        return String(format: "約 %.1f MB/分", config.estimatedMegabytesPerMinute)
+        return L10n.format("約 %.1f MB/分", config.estimatedMegabytesPerMinute)
     }
 
     func estimatedPhotoChoiceSizeText(
@@ -314,9 +314,20 @@ final class CameraController: NSObject, ObservableObject {
     var livePreviewSummaryText: String {
         switch captureMode {
         case .photo:
-            return "保存 \(livePreviewDimensionsText)・色 \(colorLevels.title)・コントラスト \(contrast.summaryTitle)"
+            return L10n.format(
+                "保存 %@・色 %@・コントラスト %@",
+                livePreviewDimensionsText,
+                colorLevels.title,
+                contrast.summaryTitle
+            )
         case .video:
-            return "保存 \(livePreviewDimensionsText)・\(videoFrameRate.title)・色 \(colorLevels.title)・コントラスト \(contrast.summaryTitle)"
+            return L10n.format(
+                "保存 %@・%@・色 %@・コントラスト %@",
+                livePreviewDimensionsText,
+                videoFrameRate.title,
+                colorLevels.title,
+                contrast.summaryTitle
+            )
         }
     }
 
@@ -420,6 +431,8 @@ final class CameraController: NSObject, ObservableObject {
 
     private static let persistedSettingsKey = "CompactCapture.cameraSettings.v2"
     private static let savedPresetsKey = "CompactCapture.cameraPresets.v1"
+    private static let whiteBalanceTemperatureRange = 2_500.0...10_000.0
+    private static let whiteBalanceTintRange = -150.0...150.0
 
     private var currentPhotoConfiguration: PhotoEncodingConfiguration {
         PhotoEncodingConfiguration(
@@ -517,7 +530,7 @@ final class CameraController: NSObject, ObservableObject {
                 self.session.startRunning()
             }
             DispatchQueue.main.async {
-                self.statusMessage = "設定中もライブ表示しています。"
+                self.statusMessage = L10n.string("設定中もライブ表示しています。")
             }
         }
     }
@@ -537,8 +550,8 @@ final class CameraController: NSObject, ObservableObject {
             }
             DispatchQueue.main.async {
                 self.statusMessage = self.microphoneAvailable
-                    ? "撮影できます。"
-                    : "撮影できます（動画は音声なし）。"
+                    ? L10n.string("撮影できます。")
+                    : L10n.string("撮影できます（動画は音声なし）。")
             }
         }
     }
@@ -611,14 +624,14 @@ final class CameraController: NSObject, ObservableObject {
             $0.name.localizedStandardCompare($1.name) == .orderedAscending
         }
         persistSavedPresets()
-        statusMessage = "プリセット「\(name)」を保存しました。"
+        statusMessage = L10n.format("プリセット「%@」を保存しました。", name)
         return true
     }
 
     func applyPreset(_ preset: CameraSettingsPreset) {
         applyPersistedSettings(preset.settings, applyZoomImmediately: true)
         persistSettings()
-        statusMessage = "プリセット「\(preset.name)」を適用しました。"
+        statusMessage = L10n.format("プリセット「%@」を適用しました。", preset.name)
     }
 
     func deletePreset(id: UUID) {
@@ -728,8 +741,20 @@ final class CameraController: NSObject, ObservableObject {
         whiteBalanceAdjustmentMode = settings.whiteBalanceAdjustmentMode
         whiteBalancePreset = settings.whiteBalancePreset
         whiteBalanceControlMode = settings.whiteBalanceControlMode
-        whiteBalanceTemperature = settings.whiteBalanceTemperature
-        whiteBalanceTint = settings.whiteBalanceTint
+        let restoredTemperature = settings.whiteBalanceTemperature.isFinite
+            ? settings.whiteBalanceTemperature
+            : 5_000
+        let restoredTint = settings.whiteBalanceTint.isFinite
+            ? settings.whiteBalanceTint
+            : 0
+        whiteBalanceTemperature = min(
+            max(restoredTemperature, Self.whiteBalanceTemperatureRange.lowerBound),
+            Self.whiteBalanceTemperatureRange.upperBound
+        )
+        whiteBalanceTint = min(
+            max(restoredTint, Self.whiteBalanceTintRange.lowerBound),
+            Self.whiteBalanceTintRange.upperBound
+        )
         zoomFactor = max(settings.zoomFactor ?? 1.0, 0.1)
         isShutterLocked = settings.isShutterLocked
         isISOLocked = settings.isISOLocked
@@ -764,15 +789,15 @@ final class CameraController: NSObject, ObservableObject {
     func formatShutter(_ seconds: Double) -> String {
         if seconds >= 1 {
             if abs(seconds.rounded() - seconds) < 0.05 {
-                return "\(Int(seconds.rounded()))秒"
+                return L10n.format("%d秒", Int(seconds.rounded()))
             }
-            return String(format: "%.1f秒", seconds)
+            return L10n.format("%.1f秒", seconds)
         }
         if seconds >= 0.3 {
-            return String(format: "%.1f秒", seconds)
+            return L10n.format("%.1f秒", seconds)
         }
         let denominator = max(1, Int((1 / seconds).rounded()))
-        return "1/\(denominator)秒"
+        return L10n.format("1/%d秒", denominator)
     }
 
     private static let standardShutterSteps: [Double] = [
@@ -875,13 +900,19 @@ final class CameraController: NSObject, ObservableObject {
                 if granted {
                     self.requestMicrophoneThenConfigure()
                 } else {
-                    self.publishAuthorization(.denied, message: "設定でカメラへのアクセスを許可してください。")
+                    self.publishAuthorization(
+                        .denied,
+                        message: L10n.string("設定でカメラへのアクセスを許可してください。")
+                    )
                 }
             }
         case .denied, .restricted:
-            publishAuthorization(.denied, message: "設定でカメラへのアクセスを許可してください。")
+            publishAuthorization(
+                .denied,
+                message: L10n.string("設定でカメラへのアクセスを許可してください。")
+            )
         @unknown default:
-            publishAuthorization(.unavailable, message: "カメラを利用できません。")
+            publishAuthorization(.unavailable, message: L10n.string("カメラを利用できません。"))
         }
     }
 
@@ -932,8 +963,8 @@ final class CameraController: NSObject, ObservableObject {
                         self.authorizationState = .ready
                         self.isConfigured = true
                         self.statusMessage = microphoneAllowed
-                            ? "撮影できます。"
-                            : "撮影できます（動画は音声なし）。"
+                            ? L10n.string("撮影できます。")
+                            : L10n.string("撮影できます（動画は音声なし）。")
                     }
                 }
             }
@@ -942,7 +973,10 @@ final class CameraController: NSObject, ObservableObject {
             guard let initialLens = self.preferredLensOption(for: self.zoomFactor)
                 ?? self.cameraLensOptions.first
             else {
-                self.publishAuthorization(.unavailable, message: "背面カメラが見つかりません。")
+                self.publishAuthorization(
+                    .unavailable,
+                    message: L10n.string("背面カメラが見つかりません。")
+                )
                 return
             }
             let device = initialLens.device
@@ -950,7 +984,10 @@ final class CameraController: NSObject, ObservableObject {
             do {
                 let input = try AVCaptureDeviceInput(device: device)
                 guard self.session.canAddInput(input) else {
-                    self.publishAuthorization(.unavailable, message: "カメラ入力を追加できません。")
+                    self.publishAuthorization(
+                        .unavailable,
+                        message: L10n.string("カメラ入力を追加できません。")
+                    )
                     return
                 }
                 self.session.addInput(input)
@@ -972,7 +1009,10 @@ final class CameraController: NSObject, ObservableObject {
             }
 
             guard self.session.canAddOutput(self.photoOutput) else {
-                self.publishAuthorization(.unavailable, message: "写真出力を追加できません。")
+                self.publishAuthorization(
+                    .unavailable,
+                    message: L10n.string("写真出力を追加できません。")
+                )
                 return
             }
             self.session.addOutput(self.photoOutput)
@@ -983,7 +1023,10 @@ final class CameraController: NSObject, ObservableObject {
                 kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_420YpCbCr8BiPlanarFullRange
             ]
             guard self.session.canAddOutput(self.videoOutput) else {
-                self.publishAuthorization(.unavailable, message: "動画出力を追加できません。")
+                self.publishAuthorization(
+                    .unavailable,
+                    message: L10n.string("動画出力を追加できません。")
+                )
                 return
             }
             self.session.addOutput(self.videoOutput)
@@ -1175,7 +1218,7 @@ final class CameraController: NSObject, ObservableObject {
         session.commitConfiguration()
 
         guard switched else {
-            publishStatus("この倍率ではカメラを切り替えられませんでした。")
+            publishStatus(L10n.string("この倍率ではカメラを切り替えられませんでした。"))
             return false
         }
 
@@ -1325,7 +1368,7 @@ final class CameraController: NSObject, ObservableObject {
                 )
             }
         } catch {
-            publishStatus("ズームを変更できませんでした: \(error.localizedDescription)")
+            publishStatus(L10n.format("ズームを変更できませんでした: %@", error.localizedDescription))
         }
     }
 
@@ -1399,11 +1442,13 @@ final class CameraController: NSObject, ObservableObject {
             device.unlockForConfiguration()
             photoOutput.maxPhotoDimensions = selection.1
             livePreviewProcessor.updatePhotoNativeDimensions(selection.1)
-            publishActualFormat("写真 最大 \(selection.1.width)×\(selection.1.height)")
+            publishActualFormat(
+                L10n.format("写真 最大 %d×%d", selection.1.width, selection.1.height)
+            )
             publishDeviceRanges(device)
             applyZoomToCurrentLensOnSessionQueue(zoomFactor, smoothly: false)
         } catch {
-            publishStatus("写真形式の設定に失敗しました: \(error.localizedDescription)")
+            publishStatus(L10n.format("写真形式の設定に失敗しました: %@", error.localizedDescription))
         }
     }
 
@@ -1427,7 +1472,7 @@ final class CameraController: NSObject, ObservableObject {
         }
 
         guard let selection = candidates.min(by: { $0.2 < $1.2 }) else {
-            publishStatus("対応する動画形式が見つかりません。")
+            publishStatus(L10n.string("対応する動画形式が見つかりません。"))
             return
         }
 
@@ -1454,13 +1499,20 @@ final class CameraController: NSObject, ObservableObject {
             }
             let logical = videoResolution.dimensions
             let output = logical.scaled(by: pixelUpscaleFactor.rawValue)
-            publishActualFormat(
-                "入力 \(selection.1.width)×\(selection.1.height) / 論理 \(logical.width)×\(logical.height) / 保存 \(output.width)×\(output.height) / \(videoFrameRate.rawValue) fps"
-            )
+            publishActualFormat(L10n.format(
+                "入力 %d×%d / 論理 %d×%d / 保存 %d×%d / %d fps",
+                selection.1.width,
+                selection.1.height,
+                logical.width,
+                logical.height,
+                output.width,
+                output.height,
+                videoFrameRate.rawValue
+            ))
             publishDeviceRanges(device)
             applyZoomToCurrentLensOnSessionQueue(zoomFactor, smoothly: false)
         } catch {
-            publishStatus("動画形式の設定に失敗しました: \(error.localizedDescription)")
+            publishStatus(L10n.format("動画形式の設定に失敗しました: %@", error.localizedDescription))
         }
     }
 
@@ -1491,7 +1543,7 @@ final class CameraController: NSObject, ObservableObject {
             }
             device.unlockForConfiguration()
         } catch {
-            publishStatus("補正設定を変更できませんでした: \(error.localizedDescription)")
+            publishStatus(L10n.format("補正設定を変更できませんでした: %@", error.localizedDescription))
         }
 
         if photoOutput.isContentAwareDistortionCorrectionSupported {
@@ -1537,7 +1589,7 @@ final class CameraController: NSObject, ObservableObject {
 
             case (true, false):
                 guard device.isExposureModeSupported(.custom) else {
-                    publishStatus("このカメラはシャッター固定に対応していません。")
+                    publishStatus(L10n.string("このカメラはシャッター固定に対応していません。"))
                     return
                 }
                 device.setExposureTargetBias(bias, completionHandler: nil)
@@ -1559,7 +1611,7 @@ final class CameraController: NSObject, ObservableObject {
 
             case (false, true):
                 guard device.isExposureModeSupported(.custom) else {
-                    publishStatus("このカメラはISO固定に対応していません。")
+                    publishStatus(L10n.string("このカメラはISO固定に対応していません。"))
                     return
                 }
                 device.setExposureTargetBias(bias, completionHandler: nil)
@@ -1579,7 +1631,7 @@ final class CameraController: NSObject, ObservableObject {
 
             case (true, true):
                 guard device.isExposureModeSupported(.custom) else {
-                    publishStatus("このカメラは手動露出に対応していません。")
+                    publishStatus(L10n.string("このカメラは手動露出に対応していません。"))
                     return
                 }
                 device.setExposureTargetBias(0, completionHandler: nil)
@@ -1592,7 +1644,7 @@ final class CameraController: NSObject, ObservableObject {
                 device.setExposureModeCustom(duration: duration, iso: clampedISO, completionHandler: nil)
             }
         } catch {
-            publishStatus("露出設定を変更できませんでした: \(error.localizedDescription)")
+            publishStatus(L10n.format("露出設定を変更できませんでした: %@", error.localizedDescription))
         }
     }
 
@@ -1612,17 +1664,20 @@ final class CameraController: NSObject, ObservableObject {
     }
 
     private func monitorExposureOnSessionQueue() {
-        guard session.isRunning, let device = videoDevice else { return }
+        guard session.isRunning,
+              let device = videoDevice,
+              device.isConnected
+        else { return }
         let ranges = deviceExposureRanges(for: device)
 
         let rawOffset = Double(device.exposureTargetOffset)
         smoothedExposureOffset = smoothedExposureOffset * 0.7 + rawOffset * 0.3
         var automationStatus: String
         switch (isShutterLocked, isISOLocked) {
-        case (false, false): automationStatus = "露出自動"
-        case (true, false): automationStatus = "ISO自動"
-        case (false, true): automationStatus = "シャッター自動"
-        case (true, true): automationStatus = "手動"
+        case (false, false): automationStatus = L10n.string("露出自動")
+        case (true, false): automationStatus = L10n.string("ISO自動")
+        case (false, true): automationStatus = L10n.string("シャッター自動")
+        case (true, true): automationStatus = L10n.string("手動")
         }
 
         if isShutterLocked, !isISOLocked {
@@ -1631,9 +1686,9 @@ final class CameraController: NSObject, ObservableObject {
             let atMaximum = currentISO >= ranges.maximumISO * 0.99
 
             if atMaximum, smoothedExposureOffset < -0.1 {
-                automationStatus = "ISO上限"
+                automationStatus = L10n.string("ISO上限")
             } else if atMinimum, smoothedExposureOffset > 0.1 {
-                automationStatus = "ISO下限"
+                automationStatus = L10n.string("ISO下限")
             } else if abs(smoothedExposureOffset) > 0.08,
                       !exposureAutomationUpdateInFlight {
                 let correctionEV = min(
@@ -1668,7 +1723,7 @@ final class CameraController: NSObject, ObservableObject {
                         }
                     } catch {
                         exposureAutomationUpdateInFlight = false
-                        publishStatus("ISO自動調整に失敗しました: \(error.localizedDescription)")
+                        publishStatus(L10n.format("ISO自動調整に失敗しました: %@", error.localizedDescription))
                     }
                 }
             }
@@ -1678,9 +1733,9 @@ final class CameraController: NSObject, ObservableObject {
             let atMaximum = currentDuration >= ranges.maximumShutter * 0.99
 
             if atMaximum, smoothedExposureOffset < -0.1 {
-                automationStatus = "シャッター上限"
+                automationStatus = L10n.string("シャッター上限")
             } else if atMinimum, smoothedExposureOffset > 0.1 {
-                automationStatus = "シャッター下限"
+                automationStatus = L10n.string("シャッター下限")
             } else if abs(smoothedExposureOffset) > 0.08,
                       !exposureAutomationUpdateInFlight {
                 let correctionEV = min(
@@ -1712,18 +1767,15 @@ final class CameraController: NSObject, ObservableObject {
                         }
                     } catch {
                         exposureAutomationUpdateInFlight = false
-                        publishStatus("シャッター自動調整に失敗しました: \(error.localizedDescription)")
+                        publishStatus(L10n.format("シャッター自動調整に失敗しました: %@", error.localizedDescription))
                     }
                 }
             }
         }
 
-        let gains = device.deviceWhiteBalanceGains
-        let whiteBalance = device.temperatureAndTintValues(for: gains)
+        let whiteBalance = safeWhiteBalanceValues(for: device)
         let currentShutter = max(device.exposureDuration.seconds, 0.000_001)
         let currentISO = Double(device.iso)
-        let currentTemperature = Double(whiteBalance.temperature)
-        let currentTint = Double(whiteBalance.tint)
         let currentOffset = smoothedExposureOffset
 
         DispatchQueue.main.async { [weak self] in
@@ -1732,9 +1784,36 @@ final class CameraController: NSObject, ObservableObject {
             self.measuredISO = currentISO
             self.measuredExposureOffset = currentOffset
             self.exposureAutomationStatus = automationStatus
-            self.measuredWhiteBalanceTemperature = currentTemperature
-            self.measuredWhiteBalanceTint = currentTint
+            if let whiteBalance {
+                self.measuredWhiteBalanceTemperature = Double(whiteBalance.temperature)
+                self.measuredWhiteBalanceTint = Double(whiteBalance.tint)
+            }
         }
+    }
+
+    private func safeWhiteBalanceValues(
+        for device: AVCaptureDevice
+    ) -> AVCaptureDevice.WhiteBalanceTemperatureAndTintValues? {
+        let maximumGain = device.maxWhiteBalanceGain
+        guard maximumGain.isFinite, maximumGain >= 1 else { return nil }
+
+        var gains = device.deviceWhiteBalanceGains
+        guard gains.redGain.isFinite,
+              gains.greenGain.isFinite,
+              gains.blueGain.isFinite
+        else { return nil }
+
+        // AVFoundation raises an Objective-C exception (which Swift can't catch)
+        // when conversion receives a gain outside the device-supported range.
+        // A camera can briefly report sentinel/out-of-range values while its
+        // session or active format is changing, so sanitize every channel first.
+        gains.redGain = min(max(1, gains.redGain), maximumGain)
+        gains.greenGain = min(max(1, gains.greenGain), maximumGain)
+        gains.blueGain = min(max(1, gains.blueGain), maximumGain)
+
+        let values = device.temperatureAndTintValues(for: gains)
+        guard values.temperature.isFinite, values.tint.isFinite else { return nil }
+        return values
     }
 
     private func resetExposureAutomationTrackingOnSessionQueue() {
@@ -1782,9 +1861,10 @@ final class CameraController: NSObject, ObservableObject {
     }
 
     private func applyWhiteBalancePreferencesOnSessionQueue() {
-        guard let device = videoDevice else { return }
+        guard let device = videoDevice, device.isConnected else { return }
         do {
             try device.lockForConfiguration()
+            defer { device.unlockForConfiguration() }
             switch whiteBalanceControlMode {
             case .automatic:
                 if device.isWhiteBalanceModeSupported(.continuousAutoWhiteBalance) {
@@ -1792,23 +1872,42 @@ final class CameraController: NSObject, ObservableObject {
                 }
             case .manual:
                 guard device.isWhiteBalanceModeSupported(.locked) else {
-                    device.unlockForConfiguration()
-                    publishStatus("このカメラは手動ホワイトバランスに対応していません。")
+                    publishStatus(L10n.string("このカメラは手動ホワイトバランスに対応していません。"))
                     return
                 }
+                let temperature = whiteBalanceTemperature.isFinite
+                    ? min(
+                        max(whiteBalanceTemperature, Self.whiteBalanceTemperatureRange.lowerBound),
+                        Self.whiteBalanceTemperatureRange.upperBound
+                    )
+                    : 5_000
+                let tint = whiteBalanceTint.isFinite
+                    ? min(
+                        max(whiteBalanceTint, Self.whiteBalanceTintRange.lowerBound),
+                        Self.whiteBalanceTintRange.upperBound
+                    )
+                    : 0
                 let values = AVCaptureDevice.WhiteBalanceTemperatureAndTintValues(
-                    temperature: Float(whiteBalanceTemperature),
-                    tint: Float(whiteBalanceTint)
+                    temperature: Float(temperature),
+                    tint: Float(tint)
                 )
                 var gains = device.deviceWhiteBalanceGains(for: values)
+                guard gains.redGain.isFinite,
+                      gains.greenGain.isFinite,
+                      gains.blueGain.isFinite,
+                      device.maxWhiteBalanceGain.isFinite,
+                      device.maxWhiteBalanceGain >= 1
+                else {
+                    publishStatus(L10n.string("ホワイトバランス値を変換できませんでした。"))
+                    return
+                }
                 gains.redGain = min(max(1, gains.redGain), device.maxWhiteBalanceGain)
                 gains.greenGain = min(max(1, gains.greenGain), device.maxWhiteBalanceGain)
                 gains.blueGain = min(max(1, gains.blueGain), device.maxWhiteBalanceGain)
                 device.setWhiteBalanceModeLocked(with: gains, completionHandler: nil)
             }
-            device.unlockForConfiguration()
         } catch {
-            publishStatus("ホワイトバランスを変更できませんでした: \(error.localizedDescription)")
+            publishStatus(L10n.format("ホワイトバランスを変更できませんでした: %@", error.localizedDescription))
         }
     }
 
@@ -1869,7 +1968,7 @@ final class CameraController: NSObject, ObservableObject {
     private func capturePhoto() {
         guard isConfigured, !isBusy else { return }
         isBusy = true
-        statusMessage = "撮影中…"
+        statusMessage = L10n.string("撮影中…")
         pendingPhotoConfiguration = currentPhotoConfiguration
         let rotationAngle = captureRotationAngle
 
@@ -1926,7 +2025,7 @@ final class CameraController: NSObject, ObservableObject {
         if isRecording {
             isRecording = false
             isBusy = true
-            statusMessage = "動画を仕上げています…"
+            statusMessage = L10n.string("動画を仕上げています…")
             outputQueue.async { [weak self] in
                 guard let self else { return }
                 self.videoRecorder.stop()
@@ -1939,13 +2038,15 @@ final class CameraController: NSObject, ObservableObject {
 
         isBusy = true
         isWaitingForRecordingStartCue = true
-        statusMessage = "録画開始音を再生しています…"
+        statusMessage = L10n.string("録画開始音を再生しています…")
         recordingCuePlayer.play(.start) { [weak self] playedSuccessfully in
             guard let self, self.isWaitingForRecordingStartCue else { return }
             guard playedSuccessfully else {
                 self.isWaitingForRecordingStartCue = false
                 self.isBusy = false
-                self.statusMessage = "録画開始音を再生できないため、録画を開始しませんでした。"
+                self.statusMessage = L10n.string(
+                    "録画開始音を再生できないため、録画を開始しませんでした。"
+                )
                 return
             }
 
@@ -1973,7 +2074,7 @@ final class CameraController: NSObject, ObservableObject {
         let sourceRotationAngle = videoOutput.connection(with: .video)?.videoRotationAngle ?? 0
         isRecording = true
         isBusy = false
-        statusMessage = "録画中"
+        statusMessage = L10n.string("録画中")
         outputQueue.async { [weak self] in
             guard let self else { return }
             self.videoRecorder.start(
@@ -2004,8 +2105,8 @@ final class CameraController: NSObject, ObservableObject {
         isWaitingForRecordingStartCue = false
         isBusy = false
         statusMessage = microphoneAvailable
-            ? "撮影できます。"
-            : "撮影できます（動画は音声なし）。"
+            ? L10n.string("撮影できます。")
+            : L10n.string("撮影できます（動画は音声なし）。")
     }
 
     private func playRecordingEndCue() {
@@ -2018,11 +2119,14 @@ final class CameraController: NSObject, ObservableObject {
                 data: encoded.data,
                 fileExtension: encoded.fileExtension
             )
-            finishLocalMediaSave(item, mediaName: "写真")
+            finishLocalMediaSave(item, mediaName: L10n.string("写真"))
         } catch {
             DispatchQueue.main.async {
                 self.isBusy = false
-                self.statusMessage = "写真をアプリ内へ保存できませんでした：\(error.localizedDescription)"
+                self.statusMessage = L10n.format(
+                    "写真をアプリ内へ保存できませんでした：%@",
+                    error.localizedDescription
+                )
             }
         }
     }
@@ -2038,13 +2142,16 @@ final class CameraController: NSObject, ObservableObject {
             DispatchQueue.main.async {
                 self.lastCapturedPhotoPreview = nil
             }
-            finishLocalMediaSave(item, mediaName: "動画")
+            finishLocalMediaSave(item, mediaName: L10n.string("動画"))
         } catch {
             try? FileManager.default.removeItem(at: recordedVideo.url)
             DispatchQueue.main.async {
                 self.isBusy = false
                 self.isRecording = false
-                self.statusMessage = "動画をアプリ内へ保存できませんでした：\(error.localizedDescription)"
+                self.statusMessage = L10n.format(
+                    "動画をアプリ内へ保存できませんでした：%@",
+                    error.localizedDescription
+                )
             }
         }
     }
@@ -2059,7 +2166,7 @@ final class CameraController: NSObject, ObservableObject {
                 self.lastSavedFileSizeText = Self.byteCountFormatter.string(
                     fromByteCount: item.fileSizeBytes
                 )
-                self.statusMessage = "\(mediaName)をアプリ内に保存しました。"
+                self.statusMessage = L10n.format("%@をアプリ内に保存しました。", mediaName)
             }
         }
     }
@@ -2076,13 +2183,20 @@ final class CameraController: NSObject, ObservableObject {
                 switch result {
                 case .success:
                     try? AppMediaStore.markPhotoLibraryExported(item)
-                    self.statusMessage = "\(mediaName)をアプリ内と写真アプリに保存しました。"
+                    self.statusMessage = L10n.format(
+                        "%@をアプリ内と写真アプリに保存しました。",
+                        mediaName
+                    )
                 case let .failure(error):
                     if let exportError = error as? PhotoLibraryExportError,
                        case .accessDenied = exportError {
                         self.saveToPhotoLibraryEnabled = false
                     }
-                    self.statusMessage = "\(mediaName)はアプリ内に保存しました。\(error.localizedDescription)"
+                    self.statusMessage = L10n.format(
+                        "%@はアプリ内に保存しました。%@",
+                        mediaName,
+                        error.localizedDescription
+                    )
                 }
             }
         }
@@ -2166,7 +2280,7 @@ extension CameraController: AVCapturePhotoCaptureDelegate {
         else {
             DispatchQueue.main.async { [weak self] in
                 self?.isBusy = false
-                self?.statusMessage = "写真データを取得できませんでした。"
+                self?.statusMessage = L10n.string("写真データを取得できませんでした。")
             }
             return
         }
@@ -2181,8 +2295,15 @@ extension CameraController: AVCapturePhotoCaptureDelegate {
                             fromByteCount: Int64(encoded.data.count)
                         )
                         self.lastCapturedPhotoPreview = preview.image
-                        self.lastCapturedPhotoInformation =
-                            "\(configuration.format.rawValue)・\(preview.pixelWidth)×\(preview.pixelHeight)・\(configuration.colorLevels.title)・コントラスト \(configuration.contrast.summaryTitle)・\(sizeText)"
+                        self.lastCapturedPhotoInformation = L10n.format(
+                            "%@・%d×%d・%@・コントラスト %@・%@",
+                            configuration.format.rawValue,
+                            preview.pixelWidth,
+                            preview.pixelHeight,
+                            configuration.colorLevels.title,
+                            configuration.contrast.summaryTitle,
+                            sizeText
+                        )
                     }
                 }
                 self.savePhoto(encoded)

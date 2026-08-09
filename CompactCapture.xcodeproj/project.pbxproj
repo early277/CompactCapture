@@ -20,6 +20,9 @@
 		A1000000000000000000000B /* RecordingCuePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000000E /* RecordingCuePlayer.swift */; };
 		A1000000000000000000000C /* RecordStart.wav in Resources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000000F /* RecordStart.wav */; };
 		A1000000000000000000000D /* RecordEnd.wav in Resources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000010 /* RecordEnd.wav */; };
+		A1000000000000000000000E /* L10n.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000011 /* L10n.swift */; };
+		A1000000000000000000000F /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000012 /* Localizable.xcstrings */; };
+		A10000000000000000000010 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000013 /* InfoPlist.xcstrings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +42,9 @@
 		A2000000000000000000000E /* RecordingCuePlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingCuePlayer.swift; sourceTree = "<group>"; };
 		A2000000000000000000000F /* RecordStart.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = RecordStart.wav; sourceTree = "<group>"; };
 		A20000000000000000000010 /* RecordEnd.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = RecordEnd.wav; sourceTree = "<group>"; };
+		A20000000000000000000011 /* L10n.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = L10n.swift; sourceTree = "<group>"; };
+		A20000000000000000000012 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		A20000000000000000000013 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,12 +77,15 @@
 				A2000000000000000000000C /* LivePreviewProcessor.swift */,
 				A2000000000000000000000D /* AppPhotoLibrary.swift */,
 				A2000000000000000000000E /* RecordingCuePlayer.swift */,
+				A20000000000000000000011 /* L10n.swift */,
 				A20000000000000000000002 /* CaptureModels.swift */,
 				A20000000000000000000004 /* PhotoProcessor.swift */,
 				A20000000000000000000005 /* VideoRecorder.swift */,
 				A20000000000000000000008 /* Assets.xcassets */,
 				A40000000000000000000004 /* RecordingCues */,
 				A20000000000000000000009 /* Info.plist */,
+				A20000000000000000000012 /* Localizable.xcstrings */,
+				A20000000000000000000013 /* InfoPlist.xcstrings */,
 			);
 			path = CompactCapture;
 			sourceTree = "<group>";
@@ -139,6 +148,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				ja,
+				en,
 				Base,
 			);
 			mainGroup = A40000000000000000000001;
@@ -159,6 +169,8 @@
 				A10000000000000000000008 /* Assets.xcassets in Resources */,
 				A1000000000000000000000C /* RecordStart.wav in Resources */,
 				A1000000000000000000000D /* RecordEnd.wav in Resources */,
+				A1000000000000000000000F /* Localizable.xcstrings in Resources */,
+				A10000000000000000000010 /* InfoPlist.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -179,6 +191,7 @@
 				A10000000000000000000009 /* LivePreviewProcessor.swift in Sources */,
 				A1000000000000000000000A /* AppPhotoLibrary.swift in Sources */,
 				A1000000000000000000000B /* RecordingCuePlayer.swift in Sources */,
+				A1000000000000000000000E /* L10n.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -237,12 +250,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 23;
+				CURRENT_PROJECT_VERSION = 24;
 				DEVELOPMENT_ASSET_PATHS = "";
+				DEVELOPMENT_TEAM = KD4SRHRFF6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = CompactCapture/Info.plist;
-				MARKETING_VERSION = 1.19;
+				MARKETING_VERSION = 1.20;
 				OTHER_SWIFT_FLAGS = "$(inherited) -Xcc -DCI_SILENCE_GL_DEPRECATION";
 				PRODUCT_BUNDLE_IDENTIFIER = jp.abyos.CompactCapture;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -263,12 +277,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 23;
+				CURRENT_PROJECT_VERSION = 24;
 				DEVELOPMENT_ASSET_PATHS = "";
+				DEVELOPMENT_TEAM = KD4SRHRFF6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = CompactCapture/Info.plist;
-				MARKETING_VERSION = 1.19;
+				MARKETING_VERSION = 1.20;
 				OTHER_SWIFT_FLAGS = "$(inherited) -Xcc -DCI_SILENCE_GL_DEPRECATION";
 				PRODUCT_BUNDLE_IDENTIFIER = jp.abyos.CompactCapture;
 				PRODUCT_NAME = "$(TARGET_NAME)";

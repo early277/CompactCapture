@@ -23,9 +23,9 @@ enum PhotoProcessingError: LocalizedError {
 
     var errorDescription: String? {
         switch self {
-        case .invalidImage: "写真データを読み取れませんでした。"
-        case .renderFailed: "写真の変換に失敗しました。"
-        case .encodeFailed: "指定形式で保存データを作れませんでした。"
+        case .invalidImage: L10n.string("写真データを読み取れませんでした。")
+        case .renderFailed: L10n.string("写真の変換に失敗しました。")
+        case .encodeFailed: L10n.string("指定形式で保存データを作れませんでした。")
         }
     }
 }
