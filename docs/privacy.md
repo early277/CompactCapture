@@ -1,45 +1,39 @@
 ---
-title: CompactCapture プライバシーポリシー
+title: CompactCapture Privacy Policy
 ---
 
-# CompactCapture プライバシーポリシー
+# CompactCapture Privacy Policy
 
-最終更新日: 2026年8月9日
+**English** | [日本語](privacy_ja.md)
 
-CompactCapture（以下「本アプリ」）は、利用者のプライバシーを尊重します。
+Last updated: August 9, 2026
 
-## 収集する情報
+The current version of CompactCapture does not collect personal information, usage data, advertising identifiers, location information, contacts, or other user data. It has no account registration, analytics, advertising SDKs, tracking, or transmission of data to an external server.
 
-本アプリの現行版は、個人情報、利用状況、広告識別子、位置情報、連絡先その他の利用者データを収集しません。アカウント登録、アクセス解析、広告SDK、追跡機能、外部サーバーへのデータ送信はありません。
+## Camera and microphone
 
-## カメラとマイク
+The app uses the camera to capture photos and videos and uses the microphone when video audio is enabled. Camera and microphone data is used only for the capture requested by the user.
 
-本アプリは写真・動画の撮影にカメラを使用し、音声付き動画を撮影する場合はマイクを使用します。取得した映像と音声は、利用者が撮影操作を行った目的にのみ使用します。
+## Photo and video storage
 
-## 写真・動画の保存
+Captured items are stored in the app's private container by default. An item is added to the system Photos library only when the user enables the Photos option or explicitly exports it. The app requests add-only Photos permission and does not read existing items in the user's Photos library.
 
-撮影した写真・動画は、初期設定では端末内の本アプリ専用領域に保存されます。設定の「写真アプリ」を有効にした場合、または詳細画面から追加保存を選んだ場合に限り、利用者が選択した写真・動画を端末の写真ライブラリへ追加します。
+## Third parties
 
-本アプリは写真ライブラリへの追加専用権限を使用し、写真ライブラリ内の既存データを読み取りません。
+Because the app does not collect user data, it does not sell, share, or provide user data to third parties.
 
-## 第三者提供
+## Data deletion
 
-本アプリは利用者データを収集しないため、第三者への販売、共有または提供を行いません。
+Items stored in the app can be deleted from its library or detail screen. Deleting the app also deletes data stored only in its private container. Copies previously added to the system Photos library must be deleted separately in the Photos app.
 
-## データの管理と削除
+## Children's privacy
 
-アプリ専用領域に保存した写真・動画は、本アプリから削除できます。本アプリを削除すると、アプリ専用領域のデータも端末から削除されます。
+The app does not collect personal information from users of any age.
 
-写真アプリへ追加したコピーは別に管理されるため、本アプリ内のデータまたは本アプリ自体を削除しても写真アプリには残ります。必要に応じて写真アプリから削除してください。
+## Changes
 
-## 子どものプライバシー
+If a future feature changes how information is handled, this page and its update date will be revised.
 
-本アプリは年齢を問わず個人情報を収集しません。
+## Contact
 
-## ポリシーの変更
-
-機能変更などにより情報の取り扱いが変わる場合は、本ページを更新し、最終更新日を改定します。
-
-## お問い合わせ
-
-[CompactCaptureのGitHub Issues](https://github.com/early277/CompactCapture/issues)からお問い合わせください。
+Open an issue in the [CompactCapture GitHub repository](https://github.com/early277/CompactCapture/issues).
